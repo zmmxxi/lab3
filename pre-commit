@@ -1,0 +1,12 @@
+#!/bin/sh
+FORBIDDEN_WORDS="TODO|FIXME"
+FILES_PATTERN="\.(js|jsx|ts|tsx|css|scss|html|md)$"
+changed_files=$(git diff --cached --name-only | grep -E $FILES_PATTERN)
+if [ "$changed_files" != "" ]; then
+for file in $changed_files; do
+if grep -E $FORBIDDEN_WORDS $file; then
+echo "ERROR: Found forbidden words (TODO, FIXME) in $file"
+exit 1
+fi
+done
+fi
